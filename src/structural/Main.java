@@ -8,10 +8,7 @@ import structural.decorator.CheeseHotDog;
 import structural.decorator.HotDog;
 import structural.decorator.PlainHotDot;
 import structural.facade.CrudServiceFacade;
-import structural.flyweight.FlyweightSourceFactory;
-import structural.flyweight.HibernateService;
-import structural.flyweight.JdbcService;
-import structural.flyweight.Service;
+import structural.flyweight.*;
 import structural.proxy.DataSource;
 import structural.proxy.DataSourceProxy;
 import structural.proxy.JpaDataSource;
@@ -64,10 +61,10 @@ public class Main {
         FlyweightSourceFactory flyweightFactory = FlyweightSourceFactory.getInstance();
 
         for (int i = 0; i < 5; i++) {
-            Service service = flyweightFactory.getFlyweightService(JdbcService.class);
+            Service service = flyweightFactory.getFlyweightService(ServiceType.jdbc);
             service.insertData("inserting new data");
 
-            service = flyweightFactory.getFlyweightService(HibernateService.class);
+            service = flyweightFactory.getFlyweightService(ServiceType.hibernate);
             service.getData();
         }
 

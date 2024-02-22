@@ -13,9 +13,9 @@ public class Product {
         this.name = name;
     }
 
-    public static Product getInstance(){
+    public static Product getInstance(double price, double weight, String name){
         if(singletonProduct == null) {
-            singletonProduct = new Product(13.5, 0.5, "Milk");
+            singletonProduct = new Product(price, weight, name);
         }
         return singletonProduct;
     }

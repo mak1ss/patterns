@@ -41,7 +41,7 @@ public class Product {
         this.name = name;
     }
 
-    public Product clone() {
+    public Product doClone() {
         return new Product(this);
     }
 

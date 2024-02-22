@@ -1,29 +1,21 @@
 package creational.abstract_factory_pattern.factories;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
 public class AbstractProductFactory {
-    private static final Map<String, Class<? extends Factory>> factories = new HashMap<>();
+    private static final Map<FactoryType, Factory> factories = new HashMap<>();
 
     static {
-        factories.put("national", NationalProductFactory.class);
-        factories.put("foreign", ForeignProductFactory.class);
+        factories.put(FactoryType.national, new NationalProductFactory());
+        factories.put(FactoryType.foreign, new ForeignProductFactory());
     }
 
-    public static Factory getProductFactory(String factoryType) throws InvocationTargetException, InstantiationException, IllegalAccessException {
-        if(!factories.containsKey(factoryType.toLowerCase())){
-            throw new IllegalArgumentException("Unknown type of factory");
-        }
-        Constructor<? extends Factory> constructor;
-        try {
-            constructor = factories.get(factoryType).getConstructor();
-        } catch (NoSuchMethodException e) {
-            throw new RuntimeException("Provided factory class doesn't contain any public constructor without arguments");
+    public static Factory getProductFactory(FactoryType factoryType){
+        if(!factories.containsKey(factoryType)){
+            factories.put(factoryType, factoryType.getFactory());
         }
 
-        return constructor.newInstance();
+        return factories.get(factoryType);
     }
 }

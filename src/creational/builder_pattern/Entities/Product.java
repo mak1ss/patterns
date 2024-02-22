@@ -1,5 +1,7 @@
 package creational.builder_pattern.Entities;
 
+import creational.builder_pattern.builders.ProductBuilder;
+
 public class Product {
     private double price;
     private double weight;
@@ -8,13 +10,12 @@ public class Product {
     private boolean isExportedToOtherCountries;
     private String supplierName;
 
-    public Product(double price, double weight, String name, boolean isAllowedForKids, boolean isExportedToOtherCountries, String supplierName) {
-        this.price = price;
-        this.weight = weight;
-        this.name = name;
-        this.isAllowedForKids = isAllowedForKids;
-        this.isExportedToOtherCountries = isExportedToOtherCountries;
-        this.supplierName = supplierName;
+    public Product(ProductBuilder builder) {
+        this.price = builder.getPrice();
+        this.name = builder.getName();
+        this.isAllowedForKids = builder.isAllowedForKids();
+        this.isExportedToOtherCountries = builder.isExportedToOtherCountries();
+        this.supplierName = builder.getSupplierName();
     }
 
     public Product() {

@@ -1,12 +1,11 @@
 package structural.flyweight;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
 public class FlyweightSourceFactory {
     private static FlyweightSourceFactory self;
-    private Map<Class<? extends Service>, Service> cache;
+    private Map<ServiceType, Service> cache;
 
     private FlyweightSourceFactory(){
         cache = new HashMap<>();
@@ -23,19 +22,12 @@ public class FlyweightSourceFactory {
         return self;
     }
 
-    public Service getFlyweightService(Class<? extends Service> key) {
-        if (cache.containsKey(key)) {
-            return cache.get(key);
+    public Service getFlyweightService(ServiceType services) {
+        if (!cache.containsKey(services)) {
+            cache.put(services, services.getService());
         }
-        Service flyweight;
-        try {
-            flyweight = key.getConstructor().newInstance();
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
-                 NoSuchMethodException e) {
-            throw new RuntimeException(e);
-        }
-        cache.put(key, flyweight);
-        return flyweight;
+
+        return cache.get(services);
     }
 
 }
