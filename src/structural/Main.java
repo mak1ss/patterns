@@ -3,6 +3,11 @@ package structural;
 import structural.adapter.EurUSCar;
 import structural.adapter.EurUSDriver;
 import structural.adapter.EuropeanCar;
+import structural.bridge.DAO;
+import structural.bridge.JdbcDataSource;
+import structural.bridge.JpaDataSource;
+import structural.composite.General;
+import structural.composite.Soldier;
 import structural.decorator.BigSausageHotDog;
 import structural.decorator.CheeseHotDog;
 import structural.decorator.HotDog;
@@ -11,7 +16,7 @@ import structural.facade.CrudServiceFacade;
 import structural.flyweight.*;
 import structural.proxy.DataSource;
 import structural.proxy.DataSourceProxy;
-import structural.proxy.JpaDataSource;
+
 
 public class Main {
     public static void main(String[] args) {
@@ -70,12 +75,37 @@ public class Main {
 
         System.out.println("------------ Flyweight End ------------");
         System.out.println("------------ Proxy Start ------------");
-        DataSource eager = new JpaDataSource();
+        DataSource eager = new structural.proxy.JpaDataSource();
         eager.getData();
 
         DataSource lazy = new DataSourceProxy();
         lazy.getData();
         System.out.println("------------ Proxy End ------------");
 
+        System.out.println("------------ Composite Start ------------");
+
+        General general = new General(new Soldier[]{ new Soldier("Петро"), new Soldier("Вася")});
+        general.completeMission("Захопити сарай");
+
+        General internationalGeneral = new General(new Soldier[] {new Soldier("Jack"), new Soldier("William")});
+        general.addChild(internationalGeneral);
+
+        general.completeMission("Capture the barn");
+        System.out.println("------------ Composite End ------------");
+
+        System.out.println("------------ Bridge Start ------------");
+
+        DAO dao = new DAO(new JdbcDataSource());
+
+        dao.createUser("Mike");
+        dao.createUser("Dave");
+        System.out.println(dao.getUser(2));
+
+        dao = new DAO(new JpaDataSource());
+
+        dao.createUser("max");
+        System.out.println(dao.getUser(1));
+
+        System.out.println("------------ Bridge End ------------");
     }
 }
